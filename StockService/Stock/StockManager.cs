@@ -11,7 +11,7 @@
 
     public Task<ProductStock> AddStock(int productId, int count)
     {
-        int currentStock = 0;
+        var currentStock = 0;
         stockByProductId.TryGetValue(productId, out currentStock);
         stockByProductId[productId] = currentStock + count;
 
@@ -20,7 +20,7 @@
 
     public Task<ProductStock> GetStock(int productId)
     {
-        int currentStock = 0;
+        var currentStock = 0;
         stockByProductId.TryGetValue(productId, out currentStock);
         return Task.FromResult(new ProductStock(productId, currentStock));
     }

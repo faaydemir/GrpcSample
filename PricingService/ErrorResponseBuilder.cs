@@ -6,7 +6,8 @@ public class ErrorResponseBuilder : IErrorResponseBuilder
     {
         var httpStatusCode = HttpStatusCode.InternalServerError;
 
-        if (ex is ApiException apiException) httpStatusCode = apiException.StatusCode;
+        if (ex is PriceCantBeNegativeException) httpStatusCode = HttpStatusCode.BadRequest;
+        else if (ex is ProductNotFoundException) httpStatusCode = HttpStatusCode.NotFound;
 
         return new ErrorResponse(ex?.Message ?? "Something went wrong.", httpStatusCode);
     }

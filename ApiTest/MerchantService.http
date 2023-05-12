@@ -1,6 +1,9 @@
 ### get product
 GET https://localhost:5000/product/1
 
+### get product !fail
+GET https://localhost:5000/product/99999
+
 ### update price
 PUT https://localhost:5000/product/1/price
 content-type: application/json
