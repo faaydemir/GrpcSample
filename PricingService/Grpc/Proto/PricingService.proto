@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package Pricing;
+
+service PricingService{
+
+  rpc GetPrice(GetPriceRequest) returns (GetPriceResponse) {}
+  rpc SetPrice(SetPriceRequest) returns (SetPriceResponse) {}
+}
+
+message GetPriceRequest {
+  int32 productId = 1;
+}
+
+message GetPriceResponse{
+  int32 productId= 1;
+  int32 price= 2;
+}
+
+message SetPriceRequest {
+  int32 productId= 1;
+  int32 price= 2;
+}
+
+message SetPriceResponse{
+}

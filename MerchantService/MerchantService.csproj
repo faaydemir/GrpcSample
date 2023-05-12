@@ -8,8 +8,12 @@
 		<PackageReference Include="Grpc.Net.Client" Version="2.45.0" />
 		<PackageReference Include="protobuf-net.Grpc" Version="1.0.152" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.45.0" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\Shared\Shared.csproj" />
+		<ProjectReference Include="..\Shared\Shared.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Protobuf Include="**/*.proto" GrpcServices="Client" ProtoRoot="Grpc\Proto" OutputDir="Grpc\Generated" />
 	</ItemGroup>
 </Project>
