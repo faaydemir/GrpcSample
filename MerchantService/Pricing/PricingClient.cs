@@ -1,22 +1,22 @@
-﻿public class PricingClient : IPricingManager
+﻿using Pricing;
+using static Pricing.PricingService;
+public class PricingClient : IPricingManager
 {
-    private readonly IHttpClientFactory httpClientFactory;
-    private readonly string PRICE_SERVICE_URL = "https://localhost:5002";
-    private HttpClient Client => httpClientFactory.CreateClient();
+    private readonly PricingServiceClient pricingClient;
 
-    public PricingClient(IHttpClientFactory httpClientFactory)
+    public PricingClient(PricingServiceClient pricingClient)
     {
-        this.httpClientFactory = httpClientFactory;
+        this.pricingClient = pricingClient;
     }
 
     public async Task<ProductPrice> GetPrice(int productId)
     {
-        return await Client.Get<ProductPrice>($"{PRICE_SERVICE_URL}/{productId}/price");
+        var productPrice = await pricingClient.GetPriceAsync(new GetPriceRequest() { ProductId = productId });
+        return new ProductPrice(productPrice.ProductId, productPrice.Price);
     }
 
     public async Task SetPrice(int productId, int price)
     {
-        await Client.Post<UpdatePriceRequest>($"{PRICE_SERVICE_URL}/{productId}/price",
-                                              new UpdatePriceRequest(price));
+        await pricingClient.SetPriceAsync(new SetPriceRequest() { ProductId = productId, Price = price });
     }
 }
