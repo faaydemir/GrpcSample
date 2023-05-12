@@ -1,0 +1,27 @@
+### get product
+GET https://localhost:5000/product/1
+
+### update price
+PUT https://localhost:5000/product/1/price
+content-type: application/json
+
+{
+  "price": 11
+}
+
+### update price !fail
+PUT https://localhost:5000/product/1/price
+content-type: application/json
+
+{
+  "price": -12
+}
+
+
+### update stock
+PUT https://localhost:5000/product/1/stock
+content-type: application/json
+
+{
+  "stock": 111
+}
