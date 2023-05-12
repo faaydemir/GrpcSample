@@ -1,21 +1,25 @@
-﻿public class StockClient : IStockManager
-{
-    private readonly IHttpClientFactory httpClientFactory;
-    private readonly string STOCK_SERVICE_URL = "https://localhost:5004";
-    private HttpClient Client => httpClientFactory.CreateClient();
+﻿using Grpc.Net.Client;
+using ProtoBuf.Grpc.Client;
 
-    public StockClient(IHttpClientFactory httpClientFactory)
+public class StockClient : IStockManager
+{
+    private IStockServiceGrpc client;
+    private readonly string STOCK_SERVICE_URL = "https://localhost:5004";
+    public StockClient()
     {
-        this.httpClientFactory = httpClientFactory;
+        var channel = GrpcChannel.ForAddress(STOCK_SERVICE_URL);
+        client = channel.CreateGrpcService<IStockServiceGrpc>();
     }
 
     public async Task<ProductStock> AddStock(int productId, int count)
     {
-        return await Client.Put<ProductStock, AddStockRequest>($"{STOCK_SERVICE_URL}/{productId}/stock/add", new AddStockRequest(count));
+        var currentStock = await client.AddStock(new AddStockRequestGrpc() { ProductId = productId, Count = count });
+        return new ProductStock(currentStock.ProductId, currentStock.Stock);
     }
 
     public async Task<ProductStock> GetStock(int productId)
     {
-        return await Client.Get<ProductStock>($"{STOCK_SERVICE_URL}/{productId}/stock");
+        var stock = await client.GetStock(new GetStockRequest() { ProductId = productId });
+        return new ProductStock(stock.ProductId, stock.Stock);
     }
 }
